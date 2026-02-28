@@ -29,6 +29,51 @@
     "circl_misp_osint": "https://www.circl.lu/doc/misp/feed-osint/manifest.json",
     "cisa_kev_json": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
   },
+  "youtube_channels": {
+    "sans_institute": "UC2uPNhGken-ogEpJBo_gruw",
+    "black_hat": "UCJ6q9Ie29ajGqKApbLqfBOg",
+    "defcon": "UC6Om9kAkl32dWlDSNlDS9Iw",
+    "mandiant": "UCFjKnMoUPQMXDE_FruNUlaw",
+    "crowdstrike": "UCsRMnaih3FYuKx4ZNJGP2dg",
+    "recorded_future": "UCLL0mIwf6wYJW1tG-1L-AXA",
+    "john_hammond": "UCVeW9qkBjo3zosnqUbG7CFw",
+    "cisa": "UCiEAfxRgMCbBx7bVp3F61RQ",
+    "chainalysis": "UChHP0S-22TYkJpjvQSfFleg",
+    "darknet_diaries": "UCJ1Nhu5jIQdQXQAaC0G_xpQ"
+  },
+  "reddit_subreddits": [
+    "netsec", "cybersecurity", "threatintel", "ReverseEngineering", "Malware",
+    "OSINT", "blueteamsec", "CryptoCurrency", "NorthKoreaNews",
+    "UkrainianConflict", "geopolitics", "intelligence", "CredibleDefense", "china"
+  ],
+  "substack_feeds": {
+    "risky_business_news": "https://news.risky.biz/feed",
+    "kim_zetter_zero_day": "https://zetter.substack.com/feed",
+    "metacurity": "https://metacurity.substack.com/feed",
+    "tldr_sec": "https://tldrsec.com/feed",
+    "lawfare": "https://www.lawfaremedia.org/feed",
+    "cipher_brief": "https://www.thecipherbrief.com/feed",
+    "war_on_the_rocks": "https://warontherocks.com/feed",
+    "cfr_net_politics": "https://www.cfr.org/blog/cyber-brief/feed"
+  },
+  "mastodon_accounts": {
+    "infosec_exchange_cisa": "https://infosec.exchange/@caborisa.rss",
+    "infosec_exchange_gcluley": "https://infosec.exchange/@gcluley.rss",
+    "infosec_exchange_briankrebs": "https://infosec.exchange/@briankrebs.rss",
+    "ioc_exchange_threatintel": "https://ioc.exchange/@threatintel.rss",
+    "infosec_exchange_joshc": "https://infosec.exchange/@joshc.rss"
+  },
+  "telegram_channels": {
+    "vx_underground": "vaborxunderground",
+    "cert_ua": "cert_ua",
+    "sova_threat_intel": "SOVAappSecurity",
+    "darktracer": "darktracer_int"
+  },
+  "twitch_channels": {
+    "defcon": "defcon",
+    "blackhat_events": "blackhatevents"
+  },
+  "kick_channels": {},
   "keyword_filters": {
     "iran": [
       "APT33", "APT34", "APT35", "APT42", "MuddyWater", "OilRig",

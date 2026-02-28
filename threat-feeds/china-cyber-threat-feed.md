@@ -722,6 +722,57 @@ Special mention: **Intrusion Truth** is an anonymous collective that has repeate
 | **VirusTotal Community** | IOC sharing and malware sample correlation |
 | **FIRST Teams** | Formal CSIRT community for coordinated disclosure |
 
+### 11.5 YouTube Channels
+
+| Channel | Description |
+|---|---|
+| **SANS Institute** | CTI Summit recordings; China APT campaign analysis and Volt Typhoon briefings |
+| **Black Hat** | Conference talks on Chinese APT research and nation-state operations |
+| **DEF CON** | Deep technical nation-state operations talks |
+| **Mandiant / Google Cloud Security** | Typhoon group webinars and presentations |
+| **CrowdStrike** | Panda group threat briefings |
+| **Recorded Future** | China/Taiwan cyber conflict and espionage webinars |
+| **John Hammond** | Accessible malware analysis including nation-state tooling |
+
+### 11.6 Substack and Newsletters
+
+| Newsletter | Description |
+|---|---|
+| **Risky Business News** (news.risky.biz) | Best daily CTI digest; consistent China APT coverage |
+| **Kim Zetter's Zero Day** (zetter.substack.com) | Investigative cyber journalism; Volt/Salt Typhoon reporting |
+| **Metacurity** (metacurity.substack.com) | Daily cybersecurity news briefing |
+| **tl;dr sec** (tldrsec.com) | Curated security newsletter surfacing key threat reports |
+| **The Cipher Brief** (thecipherbrief.com) | IC-adjacent analysis; PRC cyber from national security perspective |
+| **Lawfare** (lawfaremedia.org) | Cyber policy including US-China cyber conflict legal frameworks |
+| **CFR Net Politics** (cfr.org) | State-sponsored cyber ops tracking; maintains Cyber Operations Tracker |
+
+### 11.7 Mastodon / Fediverse
+
+| Instance | Description |
+|---|---|
+| **infosec.exchange** | Primary infosec Mastodon instance; many CTI analysts migrated here from X |
+| **ioc.exchange** | IOC and threat intelligence sharing |
+| **hackyderm.io** | Tech-focused with strong security researcher presence |
+
+### 11.8 Telegram
+
+| Channel | Description |
+|---|---|
+| **vx-underground** | Premier malware research community; Chinese APT samples shared |
+| **DarkTracer** | Dark web monitoring and threat intel |
+
+**OPSEC WARNING**: Exercise extreme caution with Telegram channels. Use isolated devices, VPNs, and burner accounts. Do not interact with content. Chinese state-linked actors are known to monitor security researcher communities.
+
+### 11.9 Streaming and Video Platforms
+
+| Platform | Channel | Description |
+|---|---|---|
+| **Twitch** | DEF CON (`defcon`) | Live conference streams; nation-state cyber operations talks |
+| **Twitch** | Black Hat Events (`blackhatevents`) | Live conference streams and briefings |
+| **Kick** | -- | No CTI presence as of February 2026 |
+
+For conference talk archives, see YouTube channels in Section 11.5. Twitch streams are ephemeral -- VODs typically available for 14-60 days after broadcast.
+
 ---
 
 ## 12. OSINT Tools and Platforms
@@ -838,6 +889,8 @@ All feeds below have been validated as returning HTTP 200 with valid RSS/Atom XM
 ---
 
 ## 15. Intelligence Gaps and Collection Priorities
+
+> **Automation Note**: The `automation/scrape_social_feeds.py` and `automation/fetch_rss_feeds.py` scripts both enforce a 90-day lookback window by default. Run `python scrape_social_feeds.py --filter china` and `python fetch_rss_feeds.py --filter china` to pull the latest China-tagged intelligence from all configured social media, video, and vendor RSS sources. This should be your first step when triaging the gaps below.
 
 ### 15.1 Known Intelligence Gaps
 

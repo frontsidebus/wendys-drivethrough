@@ -627,6 +627,16 @@ Understanding cross-vendor naming is **critical** for effective monitoring. The 
 
 **OPSEC WARNING**: Exercise extreme caution with adversary-operated Telegram channels. Use isolated devices, VPNs, and burner accounts. Do not interact with content.
 
+### 13.10 Streaming and Video Platforms
+
+| Platform | Channel | Description |
+|---|---|---|
+| **Twitch** | DEF CON (`defcon`) | Live conference streams; nation-state cyber operations talks |
+| **Twitch** | Black Hat Events (`blackhatevents`) | Live conference streams and briefings |
+| **Kick** | -- | No CTI presence as of February 2026 |
+
+For conference talk archives, see YouTube channels in Section 13.6. Twitch streams are ephemeral -- VODs typically available for 14-60 days after broadcast.
+
 ---
 
 ## 14. OSINT Tools and Platforms
@@ -833,6 +843,8 @@ CISA KEV JSON:          https://www.cisa.gov/sites/default/files/feeds/known_exp
 ---
 
 ## 18. Intelligence Gaps and Collection Priorities
+
+> **Automation Note**: The `automation/scrape_social_feeds.py` and `automation/fetch_rss_feeds.py` scripts both enforce a 90-day lookback window by default. Run `python scrape_social_feeds.py --filter iran` and `python fetch_rss_feeds.py --filter iran` to pull the latest Iran-tagged intelligence from all configured social media, video, and vendor RSS sources. This should be your first step when triaging the gaps below.
 
 ### Coverage Gap: June 2025 -- February 2026
 

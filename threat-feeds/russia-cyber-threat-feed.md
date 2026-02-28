@@ -678,6 +678,16 @@ Russian destructive cyber capability is **unmatched globally**. No other state a
 
 **OPSEC WARNING**: Exercise extreme caution with Telegram channels, especially those linked to Russian hacktivist groups (SOLNTSEPEK, CyberArmyofRussia_Reborn, XakNet, KillNet). Use isolated devices, VPNs, and burner accounts. Do not interact with content. These channels carry surveillance and exploitation risk.
 
+### 12.10 Streaming and Video Platforms
+
+| Platform | Channel | Description |
+|---|---|---|
+| **Twitch** | DEF CON (`defcon`) | Live conference streams; nation-state cyber operations talks |
+| **Twitch** | Black Hat Events (`blackhatevents`) | Live conference streams and briefings |
+| **Kick** | -- | No CTI presence as of February 2026 |
+
+For conference talk archives, see YouTube channels in Section 12.6. Twitch streams are ephemeral -- VODs typically available for 14-60 days after broadcast.
+
 ---
 
 ## 13. OSINT Tools and Platforms
@@ -861,6 +871,8 @@ CISA KEV JSON:          https://www.cisa.gov/sites/default/files/feeds/known_exp
 ---
 
 ## 16. Intelligence Gaps and Collection Priorities
+
+> **Automation Note**: The `automation/scrape_social_feeds.py` and `automation/fetch_rss_feeds.py` scripts both enforce a 90-day lookback window by default. Run `python scrape_social_feeds.py --filter russia` and `python fetch_rss_feeds.py --filter russia` to pull the latest Russia-tagged intelligence from all configured social media, video, and vendor RSS sources. This should be your first step when triaging the gaps below.
 
 ### Coverage Gap: June 2025 -- February 2026
 

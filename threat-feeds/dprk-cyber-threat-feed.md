@@ -762,6 +762,26 @@ Understanding cross-vendor naming is **critical** for effective monitoring. The 
 | **ioc.exchange** | IOC and threat intelligence sharing |
 | **hackyderm.io** | Tech-focused with security researcher presence |
 
+### 14.9 Telegram
+
+| Channel | Description |
+|---|---|
+| **vx-underground** | Premier malware research community; DPRK APT samples shared |
+| **DarkTracer** | Dark web monitoring and threat intel; DPRK-related leaks |
+| **Chainalysis aggregators** | Cryptocurrency theft intelligence and laundering trail updates |
+
+**OPSEC WARNING**: Exercise extreme caution with Telegram channels. Use isolated devices, VPNs, and burner accounts. Do not interact with content. DPRK-affiliated actors have historically targeted security researchers through social engineering.
+
+### 14.10 Streaming and Video Platforms
+
+| Platform | Channel | Description |
+|---|---|---|
+| **Twitch** | DEF CON (`defcon`) | Live conference streams; nation-state cyber operations talks |
+| **Twitch** | Black Hat Events (`blackhatevents`) | Live conference streams and briefings |
+| **Kick** | -- | No CTI presence as of February 2026 |
+
+For conference talk archives, see YouTube channels in Section 14.6. Twitch streams are ephemeral -- VODs typically available for 14-60 days after broadcast.
+
 ---
 
 ## 15. Blockchain and Crypto OSINT Tools
@@ -930,6 +950,8 @@ CISA KEV JSON:          https://www.cisa.gov/sites/default/files/feeds/known_exp
 ---
 
 ## 18. Intelligence Gaps and Collection Priorities
+
+> **Automation Note**: The `automation/scrape_social_feeds.py` and `automation/fetch_rss_feeds.py` scripts both enforce a 90-day lookback window by default. Run `python scrape_social_feeds.py --filter dprk` and `python fetch_rss_feeds.py --filter dprk` to pull the latest DPRK-tagged intelligence from all configured social media, video, and vendor RSS sources. This should be your first step when triaging the gaps below.
 
 ### Coverage Gap: June 2025 -- February 2026
 

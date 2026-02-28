@@ -89,6 +89,35 @@ def main():
         for name, url in config.get(category, {}).items():
             all_urls[f"{category}/{name}"] = url
 
+    # Substack and Mastodon feeds (direct URL dicts)
+    for category in ["substack_feeds", "mastodon_accounts"]:
+        for name, url in config.get(category, {}).items():
+            all_urls[f"{category}/{name}"] = url
+
+    # YouTube channels (construct RSS URL from channel ID)
+    for name, channel_id in config.get("youtube_channels", {}).items():
+        all_urls[f"youtube_channels/{name}"] = (
+            f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"
+        )
+
+    # Reddit subreddits (construct RSS URL from name)
+    for sub in config.get("reddit_subreddits", []):
+        all_urls[f"reddit_subreddits/{sub}"] = (
+            f"https://www.reddit.com/r/{sub}/new/.rss"
+        )
+
+    # Telegram channels (construct public preview URL from handle)
+    for name, handle in config.get("telegram_channels", {}).items():
+        all_urls[f"telegram_channels/{name}"] = f"https://t.me/s/{handle}"
+
+    # Twitch channels (check channel page URL)
+    for name, username in config.get("twitch_channels", {}).items():
+        all_urls[f"twitch_channels/{name}"] = f"https://www.twitch.tv/{username}"
+
+    # Kick channels (check channel page URL)
+    for name, username in config.get("kick_channels", {}).items():
+        all_urls[f"kick_channels/{name}"] = f"https://kick.com/{username}"
+
     print(f"[*] Validating {len(all_urls)} feed URLs...", file=sys.stderr)
 
     results = []

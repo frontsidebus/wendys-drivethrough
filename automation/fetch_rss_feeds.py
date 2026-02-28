@@ -100,7 +100,8 @@ def main():
     parser = argparse.ArgumentParser(description="Fetch and filter threat intel RSS feeds")
     parser.add_argument("--output", "-o", help="Output file path (default: stdout)")
     parser.add_argument("--filter", "-f", help="Filter by nation: iran, russia, china, dprk, all")
-    parser.add_argument("--hours", type=int, help="Only entries from last N hours")
+    parser.add_argument("--hours", type=int, default=2160,
+                        help="Only entries from last N hours (default: 2160 = 90 days)")
     parser.add_argument("--config", help="Path to feed_config.json", default=str(CONFIG_PATH))
     args = parser.parse_args()
 
@@ -123,10 +124,9 @@ def main():
 
     print(f"[*] Fetched {len(all_entries)} total entries", file=sys.stderr)
 
-    # Filter by time
-    if args.hours:
-        all_entries = filter_by_time(all_entries, args.hours)
-        print(f"[*] {len(all_entries)} entries within last {args.hours} hours", file=sys.stderr)
+    # Filter by time (default: 90 days / 2160 hours)
+    all_entries = filter_by_time(all_entries, args.hours)
+    print(f"[*] {len(all_entries)} entries within last {args.hours} hours", file=sys.stderr)
 
     # Tag entries with nation-state keywords
     keyword_filters = config.get("keyword_filters", {})
