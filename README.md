@@ -6,7 +6,12 @@ Curated cyber threat intelligence feeds, OSINT resources, and adversary tracking
 
 ```
 threat-feeds/
-  us-iran-israel-cyber-threat-feed.md   # Primary threat feed: US-Iran-Israel cyber operations
+  us-iran-israel-cyber-threat-feed.md   # Iran/Israel -- APT33, APT34, APT35, MuddyWater, CyberAv3ngers, etc.
+  russia-cyber-threat-feed.md           # Russia -- APT28, APT29, Sandworm, Turla, Gamaredon, etc.
+  china-cyber-threat-feed.md            # China -- Volt Typhoon, Salt Typhoon, APT41, APT40, APT10, etc.
+  dprk-cyber-threat-feed.md             # DPRK -- Lazarus, Kimsuky, BlueNoroff, TraderTraitor, etc.
+automation/                             # (coming) Feed ingestion and IOC aggregation scripts
+detection-rules/                        # (coming) YARA and Sigma detection rules
 ```
 
 ## What This Is
