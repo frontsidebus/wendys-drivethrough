@@ -1,0 +1,98 @@
+# FILE: sigma/iran_rmm_tool_abuse.yml
+---
+title: MuddyWater Abuse of Legitimate RMM Tools for C2
+id: 7c3e8a4f-1d2b-4f6e-9a8c-3b5d7e2f1a09
+status: experimental
+description: |
+    Detects the installation or execution of legitimate Remote Monitoring and Management (RMM)
+    tools commonly abused by MuddyWater (MERCURY/Mango Sandstorm) for command-and-control.
+    MuddyWater has been observed deploying Atera Agent, SimpleHelp, ScreenConnect (ConnectWise Control),
+    and Tactical RMM on victim endpoints after initial access, often via spearphishing with malicious
+    attachments or links. These tools provide persistent remote access that blends with legitimate
+    IT administration activity. This rule targets unauthorized or unexpected installations of these
+    tools, particularly when executed from unusual parent processes or temporary directories.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2023/04/07/mercury-and-dev-1084-destructive-attack-on-hybrid-environment/
+    - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-059a
+    - https://attack.mitre.org/groups/G0069/
+    - https://www.mandiant.com/resources/blog/muddy-water-back-new-attacks
+    - https://www.deepinstinct.com/blog/muddywater-en
+author: Wendy's Drive-Through Detection Engineering
+date: 2026-02-28
+tags:
+    - attack.command_and_control
+    - attack.t1219
+    - attack.persistence
+    - attack.t1543.003
+    - attack.defense_evasion
+    - attack.t1036
+    - cve.none
+    - detection.emerging_threats
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_atera_install:
+        - Image|endswith:
+            - '\AteraAgent.exe'
+            - '\AgentPackageNetworkDiscovery.exe'
+            - '\AgentPackageMonitoring.exe'
+            - '\AgentPackageSTRemote.exe'
+        - CommandLine|contains:
+            - 'AteraAgent'
+            - '/i IntegratorLogin='
+            - 'setup.msi INTEGRATORLOGIN='
+    selection_simplehelp:
+        - Image|endswith:
+            - '\SimpleHelp.exe'
+            - '\Remote Access.exe'
+            - '\SimpleService.exe'
+        - CommandLine|contains:
+            - 'simplehelp'
+            - 'simple-help'
+            - 'Remote Access-'
+    selection_screenconnect:
+        - Image|endswith:
+            - '\ScreenConnect.ClientService.exe'
+            - '\ScreenConnect.WindowsClient.exe'
+            - '\ConnectWiseControl.Client.exe'
+        - CommandLine|contains:
+            - 'ScreenConnect'
+            - 'ConnectWise'
+            - 'e=Access&'
+    selection_tacticalrmm:
+        - Image|endswith:
+            - '\tacticalrmm.exe'
+            - '\meshagent.exe'
+        - CommandLine|contains:
+            - 'tacticalrmm'
+            - 'tactical-rmm'
+            - 'meshcentral'
+            - 'meshagent'
+    selection_suspicious_parent:
+        ParentImage|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\wscript.exe'
+            - '\cscript.exe'
+            - '\mshta.exe'
+            - '\regsvr32.exe'
+            - '\rundll32.exe'
+            - '\excel.exe'
+            - '\winword.exe'
+            - '\outlook.exe'
+    selection_suspicious_paths:
+        Image|contains:
+            - '\Temp\'
+            - '\tmp\'
+            - '\AppData\Local\Temp\'
+            - '\Users\Public\'
+            - '\ProgramData\'
+            - '\Downloads\'
+    condition: (selection_atera_install or selection_simplehelp or selection_screenconnect or selection_tacticalrmm) and (selection_suspicious_parent or selection_suspicious_paths)
+falsepositives:
+    - Legitimate IT administration teams deploying RMM tools via scripts
+    - MSP (Managed Service Provider) environments where RMM tools are standard
+    - Software deployment tools pushing RMM agent updates through temporary directories
+level: high

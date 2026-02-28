@@ -1,0 +1,101 @@
+# FILE: sigma/china_webshell_chinacopper.yml
+---
+title: China Chopper Web Shell Deployment and Execution Detection
+id: 6c8d0e2f-4a5b-7c9d-1e3f-5a7b9c1d3e5f
+status: experimental
+description: |
+    Detects the deployment and execution of the China Chopper web shell, a compact and widely-used
+    web shell associated with multiple Chinese APT groups including APT27 (Emissary Panda),
+    APT40 (Leviathan), APT41 (Double Dragon), and Hafnium. China Chopper is notable for its
+    extremely small footprint - typically a single line of code containing an eval() or
+    execute() function with base64-encoded parameters. The server-side component is often
+    just ~73 bytes for ASPX or ~1 line for JSP/PHP. This rule detects the distinctive patterns
+    of China Chopper including the eval/base64 one-liner in web files, the characteristic
+    command-and-control traffic patterns, and the process execution chains spawned by web
+    server processes when the shell is invoked.
+references:
+    - https://attack.mitre.org/software/S0020/
+    - https://www.mandiant.com/resources/blog/china-chopper-web-shell
+    - https://www.fireeye.com/blog/threat-research/2013/08/breaking-down-the-china-chopper-web-shell-part-i.html
+    - https://unit42.paloaltonetworks.com/china-chopper-webshell/
+    - https://www.cisa.gov/news-events/analysis-reports/ar21-112a
+author: Wendy's Drive-Through Detection Engineering
+date: 2026-02-28
+tags:
+    - attack.persistence
+    - attack.t1505.003
+    - attack.execution
+    - attack.t1059.001
+    - attack.t1059.003
+    - attack.privilege_escalation
+    - attack.t1068
+    - detection.emerging_threats
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_webserver_parent:
+        ParentImage|endswith:
+            - '\w3wp.exe'
+            - '\httpd.exe'
+            - '\nginx.exe'
+            - '\apache.exe'
+            - '\tomcat.exe'
+            - '\java.exe'
+            - '\php-cgi.exe'
+            - '\php.exe'
+            - '\node.exe'
+    selection_suspicious_child:
+        Image|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\cscript.exe'
+            - '\wscript.exe'
+            - '\certutil.exe'
+            - '\bitsadmin.exe'
+            - '\net.exe'
+            - '\net1.exe'
+            - '\whoami.exe'
+            - '\ipconfig.exe'
+            - '\systeminfo.exe'
+            - '\tasklist.exe'
+            - '\netstat.exe'
+    selection_china_chopper_cmdline:
+        CommandLine|contains:
+            - 'eval('
+            - 'eval request('
+            - 'eval(Request'
+            - 'execute(request('
+            - 'Execute(Request'
+            - 'base64_decode'
+            - 'FromBase64String'
+            - 'System.Runtime.InteropServices'
+            - 'Response.Write'
+            - 'Response.BinaryWrite'
+            - 'CreateObject("WScript.Shell")'
+            - 'unsafe'
+    selection_china_chopper_one_liner:
+        CommandLine|contains|all:
+            - '/c'
+            - 'cd /d'
+        CommandLine|contains:
+            - '&echo [S]&'
+            - '&echo [E]&'
+            - 'echo [S]&cd'
+    selection_aspx_indicators:
+        CommandLine|contains:
+            - '<%@ Page Language'
+            - 'runat="server"'
+            - 'Page_Load'
+            - 'ProcessStartInfo'
+            - 'RedirectStandardOutput'
+            - 'HttpPostedFile'
+            - 'Server.MapPath'
+    condition: (selection_webserver_parent and selection_suspicious_child) or selection_china_chopper_cmdline or selection_china_chopper_one_liner or (selection_webserver_parent and selection_aspx_indicators)
+falsepositives:
+    - Legitimate web application debugging where web servers spawn command-line tools
+    - Web-based server administration panels that execute system commands
+    - CGI scripts or legacy web applications that legitimately invoke system commands
+    - Automated deployment tools that use web server processes to run scripts
+level: critical

@@ -1,0 +1,107 @@
+# FILE: sigma/russia_ntds_dit_extraction.yml
+---
+title: Russian APT NTDS.dit Credential Extraction via Shadow Copy or Ntdsutil
+id: 3f5a7b9c-1d2e-4f6a-8b0c-2d4e6f8a0b1c
+status: experimental
+description: |
+    Detects attempts to extract the NTDS.dit Active Directory database, a technique extensively
+    used by multiple Russian APT groups including APT28 (Fancy Bear/Forest Blizzard), APT29
+    (Cozy Bear/Midnight Blizzard), Sandworm (Seashell Blizzard), and Turla (Secret Blizzard).
+    NTDS.dit contains all AD credentials and is a high-priority target for domain-wide compromise.
+    Adversaries extract this file using ntdsutil IFM (Install From Media) snapshots, vssadmin/
+    wmic shadow copy creation to access the locked file, direct copy with esentutl, and Impacket
+    secretsdump.py for remote extraction via DRSUAPI/DRS replication. This rule covers the
+    full kill chain of NTDS.dit extraction methods observed across Russian APT campaigns.
+references:
+    - https://attack.mitre.org/techniques/T1003/003/
+    - https://www.microsoft.com/en-us/security/blog/2023/08/02/midnight-blizzard-conducts-targeted-social-engineering-over-microsoft-teams/
+    - https://www.mandiant.com/resources/blog/apt29-wineloader-german-political-parties
+    - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-347a
+    - https://adsecurity.org/?p=2398
+author: Wendy's Drive-Through Detection Engineering
+date: 2026-02-28
+tags:
+    - attack.credential_access
+    - attack.t1003.003
+    - attack.t1003.006
+    - attack.t1070.004
+    - detection.emerging_threats
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_ntdsutil:
+        Image|endswith: '\ntdsutil.exe'
+        CommandLine|contains|all:
+            - 'ac'
+            - 'i'
+            - 'ntds'
+    selection_ntdsutil_ifm:
+        Image|endswith: '\ntdsutil.exe'
+        CommandLine|contains:
+            - 'ifm'
+            - 'install from media'
+            - '"activate instance ntds"'
+            - "'activate instance ntds'"
+            - 'create full'
+    selection_vssadmin_shadow:
+        Image|endswith: '\vssadmin.exe'
+        CommandLine|contains|all:
+            - 'create'
+            - 'shadow'
+    selection_wmic_shadow:
+        Image|endswith: '\wmic.exe'
+        CommandLine|contains|all:
+            - 'shadowcopy'
+            - 'call'
+            - 'create'
+    selection_powershell_shadow:
+        Image|endswith:
+            - '\powershell.exe'
+            - '\pwsh.exe'
+        CommandLine|contains:
+            - 'Win32_ShadowCopy'
+            - 'New-CimInstance'
+            - '[WmiClass]'
+            - 'Win32_ShadowCopy).Create'
+    selection_copy_ntds:
+        CommandLine|contains:
+            - '\Windows\NTDS\ntds.dit'
+            - '\Windows\NTDS\NTDS.dit'
+            - 'ntds.dit'
+        Image|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\xcopy.exe'
+            - '\robocopy.exe'
+            - '\esentutl.exe'
+            - '\7z.exe'
+            - '\rar.exe'
+    selection_esentutl:
+        Image|endswith: '\esentutl.exe'
+        CommandLine|contains:
+            - '/y'
+            - '/p'
+            - '/r'
+            - 'ntds'
+    selection_secretsdump_indicators:
+        CommandLine|contains:
+            - 'secretsdump'
+            - 'DumpNTDS'
+            - '-just-dc'
+            - '-ntds'
+            - 'drsuapi'
+            - 'GetNChanges'
+            - 'DsGetNCChanges'
+    selection_shadow_copy_access:
+        CommandLine|contains|all:
+            - '\\\\?\\GLOBALROOT\\Device\\HarddiskVolumeShadowCopy'
+            - 'ntds'
+    condition: selection_ntdsutil or selection_ntdsutil_ifm or selection_vssadmin_shadow or selection_wmic_shadow or selection_powershell_shadow or selection_copy_ntds or selection_esentutl or selection_secretsdump_indicators or selection_shadow_copy_access
+falsepositives:
+    - Legitimate Active Directory backup operations by domain administrators
+    - Authorized disaster recovery procedures involving NTDS.dit
+    - Active Directory migration tools creating IFM snapshots
+    - Authorized penetration testing performing credential auditing
+level: critical

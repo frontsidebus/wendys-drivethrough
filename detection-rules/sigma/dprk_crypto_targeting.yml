@@ -1,0 +1,134 @@
+# FILE: sigma/dprk_crypto_targeting.yml
+---
+title: Lazarus TraderTraitor Trojanized Cryptocurrency and Trading Application Execution
+id: 7d9e1f3a-5b6c-8d0e-2f4a-6b8c0d2e4f5a
+status: experimental
+description: |
+    Detects execution patterns consistent with Lazarus Group (HIDDEN COBRA) and TraderTraitor
+    (UNC4899/Jade Sleet) campaigns targeting cryptocurrency and DeFi organizations. DPRK threat
+    actors conduct elaborate social engineering via LinkedIn and Telegram, posing as recruiters
+    or developers, to deliver trojanized cryptocurrency trading platforms, DeFi applications,
+    and malicious npm packages. The attack chain typically involves Electron-based applications
+    or Node.js scripts that execute embedded payloads. This rule detects execution of known
+    trojanized application names, suspicious Electron/Node.js behavior patterns, and indicators
+    of malicious npm packages used in the TraderTraitor and AppleJeus campaigns.
+references:
+    - https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-108a
+    - https://attack.mitre.org/groups/G0032/
+    - https://www.mandiant.com/resources/blog/dprk-targeting-crypto
+    - https://www.fbi.gov/news/press-releases/fbi-identifies-lazarus-group-cyber-actors-as-responsible-for-theft-of-620-million-of-ethereum
+    - https://unit42.paloaltonetworks.com/tradertraitor/
+    - https://www.phylum.io/research/lazarus-npm-campaign
+author: Wendy's Drive-Through Detection Engineering
+date: 2026-02-28
+tags:
+    - attack.execution
+    - attack.t1204.002
+    - attack.t1059.007
+    - attack.initial_access
+    - attack.t1566.002
+    - attack.persistence
+    - attack.t1546
+    - attack.defense_evasion
+    - attack.t1036.005
+    - detection.emerging_threats
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_known_trojanized_apps:
+        Image|endswith:
+            - '\TokenizedPlatform.exe'
+            - '\CryptoCurrencyTrader.exe'
+            - '\DeFiGamefi.exe'
+            - '\CryptoNeuroTrader.exe'
+            - '\ESILET.exe'
+            - '\dafom.exe'
+            - '\CreAI Deck.exe'
+            - '\FCCCall.exe'
+            - '\FinancialCalc.exe'
+        CommandLine|contains:
+            - 'TokenizedPlatform'
+            - 'CryptoCurrencyTrader'
+            - 'DeFiGamefi'
+            - 'CryptoNeuroTrader'
+            - 'ESILET'
+            - 'dafom'
+            - 'CreAI Deck'
+            - 'FCCCall'
+    selection_electron_suspicious:
+        Image|endswith:
+            - '\electron.exe'
+            - '\Electron.exe'
+        CommandLine|contains:
+            - '--no-sandbox'
+            - '--disable-gpu-sandbox'
+            - '--allow-file-access-from-files'
+            - '--disable-web-security'
+        ParentImage|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+    selection_node_suspicious_exec:
+        Image|endswith:
+            - '\node.exe'
+            - '\nodejs.exe'
+        CommandLine|contains:
+            - 'child_process'
+            - 'exec('
+            - 'spawn('
+            - '.bat"'
+            - '.ps1"'
+            - 'Buffer.from('
+            - 'eval('
+            - '--require'
+    selection_npm_malicious_patterns:
+        Image|endswith:
+            - '\npm.cmd'
+            - '\npx.cmd'
+            - '\node.exe'
+        CommandLine|contains:
+            - 'preinstall'
+            - 'postinstall'
+            - 'preuninstall'
+        ParentImage|endswith:
+            - '\npm.cmd'
+            - '\node.exe'
+    selection_malicious_npm_packages:
+        CommandLine|contains:
+            - 'wealthsimulator'
+            - 'cryptofolio'
+            - 'call-blockflow'
+            - 'crypto-assets-trader'
+            - 'cross-bridge'
+            - 'beavertail'
+            - 'invisible-ferret'
+            - 'nordfi'
+            - 'chainge-finance'
+    selection_crypto_targeting_recon:
+        Image|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+        CommandLine|contains:
+            - 'wallet.dat'
+            - 'keystore'
+            - '.metamask'
+            - 'solana'
+            - 'phantom'
+            - 'exodus'
+            - 'atomic'
+            - 'electrum'
+            - 'bitcoin'
+            - 'ethereum'
+            - 'Ethereum'
+            - 'cryptocurrency'
+            - 'Login Data'
+            - 'Cookies'
+    condition: selection_known_trojanized_apps or selection_malicious_npm_packages or (selection_electron_suspicious) or (selection_node_suspicious_exec and selection_npm_malicious_patterns) or (selection_crypto_targeting_recon and selection_node_suspicious_exec)
+falsepositives:
+    - Legitimate cryptocurrency trading application installations
+    - Software developers working on Electron-based applications with debugging flags
+    - Node.js developers running npm install with packages that have postinstall hooks
+    - Authorized security research on cryptocurrency malware samples
+level: high

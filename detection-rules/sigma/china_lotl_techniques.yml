@@ -1,0 +1,140 @@
+# FILE: sigma/china_lotl_techniques.yml
+---
+title: Volt Typhoon Living-off-the-Land Technique Chains on Critical Infrastructure
+id: 5b7c9d1e-3f4a-6b8c-0d2e-4f6a8b0c2d1e
+status: experimental
+description: |
+    Detects living-off-the-land (LOTL) technique chains consistent with Volt Typhoon (Bronze
+    Silhouette/Vanguard Panda/DEV-0391) operations targeting critical infrastructure. Volt
+    Typhoon operates almost exclusively using built-in Windows tools to avoid detection,
+    leveraging ntdsutil for credential access, netsh for port forwarding and firewall manipulation,
+    wmic for system discovery, certutil for file transfer and decoding, and PowerShell for
+    reconnaissance and persistence. The group targets communications, energy, transportation,
+    water, and defense sectors, maintaining long-term stealth access. This rule detects
+    suspicious combinations and sequences of native Windows tool usage that indicate LOTL
+    activity rather than routine administration.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2023/05/24/volt-typhoon-targets-us-critical-infrastructure-with-living-off-the-land-techniques/
+    - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-144a
+    - https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-038a
+    - https://attack.mitre.org/groups/G1017/
+    - https://www.mandiant.com/resources/blog/volt-typhoon-critical-infrastructure
+author: Wendy's Drive-Through Detection Engineering
+date: 2026-02-28
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.discovery
+    - attack.t1018
+    - attack.t1016
+    - attack.t1082
+    - attack.defense_evasion
+    - attack.t1140
+    - attack.lateral_movement
+    - attack.t1090.001
+    - attack.credential_access
+    - attack.t1003.003
+    - detection.emerging_threats
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_netsh_portproxy:
+        Image|endswith: '\netsh.exe'
+        CommandLine|contains|all:
+            - 'interface'
+            - 'portproxy'
+        CommandLine|contains:
+            - 'add'
+            - 'v4tov4'
+            - 'connectaddress'
+            - 'connectport'
+    selection_netsh_firewall:
+        Image|endswith: '\netsh.exe'
+        CommandLine|contains:
+            - 'advfirewall firewall add rule'
+            - 'advfirewall set allprofiles state off'
+            - 'firewall set opmode disable'
+            - 'advfirewall firewall delete rule'
+    selection_certutil_download:
+        Image|endswith: '\certutil.exe'
+        CommandLine|contains:
+            - '-urlcache'
+            - '-verifyctl'
+            - '-split'
+            - '-decode'
+            - '-decodehex'
+            - 'urlcache -f'
+            - '-encode'
+    selection_wmic_recon:
+        Image|endswith: '\wmic.exe'
+        CommandLine|contains:
+            - 'process list'
+            - 'service list'
+            - 'os get'
+            - 'computersystem get'
+            - 'useraccount list'
+            - 'group list'
+            - '/node:'
+            - 'process call create'
+            - 'nicconfig'
+            - 'qfe list'
+    selection_powershell_recon:
+        Image|endswith:
+            - '\powershell.exe'
+            - '\pwsh.exe'
+        CommandLine|contains:
+            - 'Get-NetIPConfiguration'
+            - 'Get-NetAdapter'
+            - 'Get-NetRoute'
+            - 'Get-DnsClientServerAddress'
+            - 'Get-WmiObject Win32_NetworkAdapterConfiguration'
+            - 'Get-ADComputer'
+            - 'Get-ADUser'
+            - 'Get-ADDomain'
+            - 'Get-ADForest'
+            - 'Resolve-DnsName'
+            - 'Get-Process'
+            - 'Get-Service'
+            - 'Get-EventLog -LogName Security'
+            - 'Get-WinEvent'
+            - 'nltest /dclist'
+            - 'nltest /domain_trusts'
+    selection_ntdsutil_lotl:
+        Image|endswith: '\ntdsutil.exe'
+        CommandLine|contains:
+            - 'ifm'
+            - 'create full'
+            - 'activate instance'
+            - 'ac i ntds'
+    selection_net_commands:
+        Image|endswith:
+            - '\net.exe'
+            - '\net1.exe'
+        CommandLine|contains:
+            - 'user /domain'
+            - 'group /domain'
+            - 'group "domain admins"'
+            - 'localgroup administrators'
+            - 'share'
+            - 'view'
+            - 'accounts /domain'
+            - 'session'
+            - 'use \\\\*'
+    selection_reg_sam:
+        Image|endswith: '\reg.exe'
+        CommandLine|contains:
+            - 'save HKLM\SAM'
+            - 'save HKLM\SYSTEM'
+            - 'save HKLM\SECURITY'
+            - 'save hklm\sam'
+            - 'save hklm\system'
+            - 'save hklm\security'
+    condition: selection_netsh_portproxy or selection_netsh_firewall or selection_certutil_download or selection_ntdsutil_lotl or selection_reg_sam or (selection_wmic_recon and selection_powershell_recon) or (selection_net_commands and (selection_wmic_recon or selection_powershell_recon))
+falsepositives:
+    - System administrators performing legitimate network configuration with netsh
+    - Authorized IT operations using certutil for certificate management
+    - Legitimate WMIC usage in enterprise management scripts
+    - Domain administrators running Active Directory inventory scripts
+    - Network engineers configuring port forwarding for approved services
+level: high

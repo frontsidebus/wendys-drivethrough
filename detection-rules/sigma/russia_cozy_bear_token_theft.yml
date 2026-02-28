@@ -1,0 +1,87 @@
+# FILE: sigma/russia_cozy_bear_token_theft.yml
+---
+title: APT29 Midnight Blizzard OAuth Token Theft and Malicious Application Consent
+id: 4a6b8c0d-2e3f-5a7b-9c1d-3e5f7a9b1c0d
+status: experimental
+description: |
+    Detects anomalous OAuth application consent grants and token abuse patterns consistent with
+    APT29 (Midnight Blizzard/Cozy Bear/Nobelium) operations. APT29 has extensively targeted
+    Microsoft 365 and Azure AD environments by creating or compromising OAuth applications to
+    obtain long-lived access tokens, bypassing MFA and conditional access policies. Key TTPs
+    include registering malicious multi-tenant applications, consenting to excessive Graph API
+    permissions (Mail.Read, Files.Read, etc.), abusing service principal credentials, leveraging
+    stolen refresh tokens for persistent access, and targeting federated identity providers.
+    This rule detects suspicious OAuth consent events, unusual application permission grants,
+    and token manipulation indicators in Azure AD audit and sign-in logs.
+references:
+    - https://www.microsoft.com/en-us/security/blog/2024/01/25/midnight-blizzard-guidance-for-responders-on-nation-state-attack/
+    - https://www.microsoft.com/en-us/security/blog/2023/06/08/detecting-and-mitigating-a-multi-stage-aispoofing-attack-targeting-banking-institutions/
+    - https://attack.mitre.org/groups/G0016/
+    - https://www.mandiant.com/resources/blog/apt29-wineloader-german-political-parties
+    - https://msrc.microsoft.com/blog/2024/01/microsoft-actions-following-attack-by-nation-state-actor-midnight-blizzard/
+author: Wendy's Drive-Through Detection Engineering
+date: 2026-02-28
+tags:
+    - attack.credential_access
+    - attack.t1528
+    - attack.persistence
+    - attack.t1098.003
+    - attack.defense_evasion
+    - attack.t1550.001
+    - attack.initial_access
+    - attack.t1078.004
+    - detection.emerging_threats
+logsource:
+    product: azure
+    service: auditlogs
+detection:
+    selection_oauth_consent:
+        Operation:
+            - 'Consent to application'
+            - 'Add OAuth2PermissionGrant'
+            - 'Add app role assignment grant to user'
+            - 'Add delegated permission grant'
+            - 'Add application'
+    selection_high_privilege_permissions:
+        ModifiedProperties.NewValue|contains:
+            - 'Mail.Read'
+            - 'Mail.ReadWrite'
+            - 'Mail.Send'
+            - 'Files.Read.All'
+            - 'Files.ReadWrite.All'
+            - 'Directory.Read.All'
+            - 'Directory.ReadWrite.All'
+            - 'User.Read.All'
+            - 'User.ReadWrite.All'
+            - 'Application.ReadWrite.All'
+            - 'RoleManagement.ReadWrite.Directory'
+            - 'AppRoleAssignment.ReadWrite.All'
+            - 'full_access_as_app'
+            - 'Exchange.ManageAsApp'
+    selection_app_credential_add:
+        Operation:
+            - 'Add service principal credentials'
+            - 'Update application - Certificates and secrets management'
+            - 'Add service principal'
+    selection_multitenant_app:
+        ModifiedProperties.NewValue|contains:
+            - 'availableToOtherTenants'
+            - 'AzureADMultipleOrgs'
+            - 'AzureADandPersonalMicrosoftAccount'
+    selection_suspicious_token_activity:
+        Operation:
+            - 'Add owner to application'
+            - 'Add owner to service principal'
+            - 'Update application'
+        ResultType: '0'
+    selection_federated_credential:
+        Operation:
+            - 'Add federated identity credential'
+            - 'Update federated identity credential'
+    condition: (selection_oauth_consent and selection_high_privilege_permissions) or (selection_app_credential_add and selection_multitenant_app) or selection_federated_credential or (selection_suspicious_token_activity and selection_high_privilege_permissions)
+falsepositives:
+    - Legitimate enterprise application registrations by authorized developers
+    - Azure AD administrative operations adding service principals for approved applications
+    - Third-party SaaS application integrations requiring broad permissions
+    - Automated deployment pipelines updating application credentials during rotation
+level: high

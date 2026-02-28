@@ -1,0 +1,61 @@
+{
+  "vendor_rss_feeds": {
+    "microsoft_threat_intel": "https://www.microsoft.com/en-us/security/blog/topic/threat-intelligence/feed/",
+    "google_tag": "https://blog.google/threat-analysis-group/rss/",
+    "mandiant": "https://cloudblog.withgoogle.com/topics/threat-intelligence/rss/",
+    "crowdstrike": "https://www.crowdstrike.com/en-us/blog/feed",
+    "recorded_future": "https://www.recordedfuture.com/feed",
+    "unit42": "https://unit42.paloaltonetworks.com/feed/",
+    "checkpoint_research": "https://research.checkpoint.com/feed/",
+    "sentinellabs": "https://www.sentinelone.com/labs/feed/",
+    "eset_welivesecurity": "https://www.welivesecurity.com/en/rss/feed/",
+    "cisco_talos": "https://blog.talosintelligence.com/rss/",
+    "proofpoint": "https://www.proofpoint.com/us/rss.xml",
+    "kaspersky_securelist": "https://securelist.com/feed/",
+    "volexity": "https://www.volexity.com/feed/",
+    "intel471": "https://www.intel471.com/blog/feed"
+  },
+  "government_feeds": {
+    "cisa_kev_json": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+    "uk_ncsc_reports": "https://www.ncsc.gov.uk/api/1/services/v1/report-rss-feed.xml",
+    "uk_ncsc_all": "https://www.ncsc.gov.uk/api/1/services/v1/all-rss-feed.xml"
+  },
+  "ioc_feeds": {
+    "urlhaus_recent_csv": "https://urlhaus.abuse.ch/downloads/csv_recent/",
+    "malwarebazaar_recent_csv": "https://bazaar.abuse.ch/export/csv/recent/",
+    "malwarebazaar_recent_sha256": "https://bazaar.abuse.ch/export/txt/sha256/recent/",
+    "threatfox_recent_csv": "https://threatfox.abuse.ch/export/csv/recent/",
+    "threatfox_recent_json": "https://threatfox.abuse.ch/export/json/recent/",
+    "circl_misp_osint": "https://www.circl.lu/doc/misp/feed-osint/manifest.json",
+    "cisa_kev_json": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
+  },
+  "keyword_filters": {
+    "iran": [
+      "APT33", "APT34", "APT35", "APT42", "MuddyWater", "OilRig",
+      "Charming Kitten", "Mint Sandstorm", "Peach Sandstorm", "Mango Sandstorm",
+      "Cotton Sandstorm", "Lemon Sandstorm", "Pioneer Kitten", "CyberAv3ngers",
+      "Iran", "IRGC", "MOIS", "Agrius", "Moses Staff", "Void Manticore",
+      "Scarred Manticore", "BiBi", "Shamoon"
+    ],
+    "russia": [
+      "APT28", "APT29", "Sandworm", "Turla", "Gamaredon", "Fancy Bear",
+      "Cozy Bear", "Forest Blizzard", "Midnight Blizzard", "Seashell Blizzard",
+      "Secret Blizzard", "Aqua Blizzard", "Star Blizzard", "Ember Bear",
+      "Cadet Blizzard", "COLDRIVER", "GRU", "SVR", "FSB", "Nobelium",
+      "SolarWinds", "NotPetya", "WhisperGate", "HermeticWiper"
+    ],
+    "china": [
+      "APT1", "APT10", "APT27", "APT31", "APT40", "APT41",
+      "Volt Typhoon", "Salt Typhoon", "Silk Typhoon", "Flax Typhoon",
+      "Charcoal Typhoon", "Mustang Panda", "Winnti", "Hafnium",
+      "MSS", "PLA", "ORB network", "LOTL", "living-off-the-land"
+    ],
+    "dprk": [
+      "Lazarus", "APT38", "Kimsuky", "Andariel", "BlueNoroff",
+      "Diamond Sleet", "Sapphire Sleet", "Emerald Sleet", "Onyx Sleet",
+      "Citrine Sleet", "Moonstone Sleet", "Jade Sleet", "Ruby Sleet",
+      "TraderTraitor", "HIDDEN COBRA", "RGB", "DPRK", "North Korea",
+      "AppleJeus", "FASTCash", "3CX"
+    ]
+  }
+}

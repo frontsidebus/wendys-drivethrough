@@ -1,0 +1,121 @@
+# FILE: sigma/dprk_browser_extension_theft.yml
+---
+title: SHARPEXT-Style Malicious Browser Extension Sideloading for Email Harvesting
+id: 8e0f2a4b-6c7d-9e1f-3a5b-7c9d1e3f5a6b
+status: experimental
+description: |
+    Detects suspicious browser extension sideloading patterns consistent with DPRK's SHARPEXT
+    malware (attributed to Kimsuky/APT43/Thallium/Emerald Sleet). SHARPEXT is deployed post-
+    compromise to directly inspect and exfiltrate email data from Chromium-based browsers
+    (Chrome, Edge) and Firefox by installing a malicious extension that reads browser mail
+    sessions. The malware modifies browser Preferences and Secure Preferences files, alters
+    the browser shortcut to load with --load-extension pointing to the malicious extension
+    directory, and disables Developer Mode warnings. This rule detects the file modification
+    patterns, browser launch parameter manipulation, and extension sideloading indicators
+    associated with this technique.
+references:
+    - https://www.volexity.com/blog/2022/07/28/sharpext-new-browser-extension-steals-emails/
+    - https://attack.mitre.org/techniques/T1176/
+    - https://attack.mitre.org/groups/G0094/
+    - https://www.mandiant.com/resources/blog/apt43-north-korea-cybercrime-espionage
+    - https://asec.ahnlab.com/en/50757/
+author: Wendy's Drive-Through Detection Engineering
+date: 2026-02-28
+tags:
+    - attack.persistence
+    - attack.t1176
+    - attack.collection
+    - attack.t1114.001
+    - attack.credential_access
+    - attack.t1539
+    - attack.defense_evasion
+    - attack.t1036
+    - detection.emerging_threats
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_browser_load_extension:
+        Image|endswith:
+            - '\chrome.exe'
+            - '\msedge.exe'
+            - '\brave.exe'
+            - '\vivaldi.exe'
+            - '\opera.exe'
+        CommandLine|contains:
+            - '--load-extension='
+            - '--disable-extensions-except='
+    selection_disable_security:
+        CommandLine|contains:
+            - '--disable-client-side-phishing-detection'
+            - '--disable-default-apps'
+            - '--disable-popup-blocking'
+            - '--allow-outdated-plugins'
+            - '--silent-launch'
+            - '--no-first-run'
+            - '--disable-infobars'
+            - '--disable-component-update'
+    selection_browser_devmode_bypass:
+        Image|endswith:
+            - '\chrome.exe'
+            - '\msedge.exe'
+        CommandLine|contains:
+            - '--disable-extensions-file-access-check'
+            - '--enable-easy-off-store-extension-install'
+            - '--suppress-message-center-popups'
+    selection_preferences_modification:
+        Image|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\python.exe'
+            - '\python3.exe'
+            - '\cscript.exe'
+            - '\wscript.exe'
+        CommandLine|contains:
+            - 'Preferences'
+            - 'Secure Preferences'
+            - 'Local State'
+        CommandLine|contains:
+            - '\\Google\\Chrome\\User Data\\'
+            - '\\Microsoft\\Edge\\User Data\\'
+            - '\\BraveSoftware\\Brave-Browser\\User Data\\'
+    selection_extension_directory_creation:
+        Image|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\xcopy.exe'
+            - '\robocopy.exe'
+        CommandLine|contains:
+            - '\\Extensions\\'
+            - 'manifest.json'
+            - 'background.js'
+            - 'content.js'
+        CommandLine|contains:
+            - '\\AppData\\Local\\'
+            - '\\AppData\\Roaming\\'
+            - '\\ProgramData\\'
+            - '\\Temp\\'
+    selection_shortcut_modification:
+        Image|endswith:
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\cscript.exe'
+            - '\wscript.exe'
+        CommandLine|contains:
+            - 'WScript.Shell'
+            - 'CreateShortcut'
+            - '.lnk'
+        CommandLine|contains:
+            - 'chrome'
+            - 'msedge'
+            - 'brave'
+            - '--load-extension'
+    condition: (selection_browser_load_extension and selection_disable_security) or selection_browser_devmode_bypass or selection_preferences_modification or (selection_extension_directory_creation and selection_shortcut_modification) or (selection_browser_load_extension and selection_shortcut_modification)
+falsepositives:
+    - Enterprise browser extension deployment via Group Policy or MDM solutions
+    - Software developers testing browser extensions with --load-extension during development
+    - Browser automation tools (Selenium, Puppeteer) launching browsers with custom flags
+    - IT administrators managing browser configurations via scripts
+level: high

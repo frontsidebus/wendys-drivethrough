@@ -1,0 +1,84 @@
+# FILE: sigma/iran_dns_tunneling.yml
+---
+title: OilRig APT34 DNS Tunneling for C2 and Data Exfiltration
+id: 9f1e2d3c-4b5a-6e7f-8091-a2b3c4d5e6f7
+status: experimental
+description: |
+    Detects DNS tunneling patterns consistent with OilRig (APT34/Helix Kitten/Hazel Sandstorm)
+    operations. OilRig extensively uses DNS tunneling for C2 communication and data exfiltration
+    via custom tools such as DNSExfiltrator, ALMA Communicator, Glimpse (BondUpdater), and
+    RDAT. The technique encodes data within DNS query names using long subdomain labels,
+    TXT record queries, and high-frequency lookups to attacker-controlled domains. This rule
+    detects anomalous DNS query patterns including unusually long query names, high volumes
+    of TXT/NULL/CNAME record requests, and base64/hex-encoded subdomain labels that are
+    hallmarks of DNS tunneling.
+references:
+    - https://unit42.paloaltonetworks.com/dns-tunneling-in-the-wild/
+    - https://attack.mitre.org/groups/G0049/
+    - https://www.mandiant.com/resources/blog/apt34-targeting-jordan-government
+    - https://www.fireeye.com/blog/threat-research/2019/07/hard-pass-declining-apt34-invite-to-join-their-professional-network.html
+    - https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence/crambus-middle-east-government
+author: Wendy's Drive-Through Detection Engineering
+date: 2026-02-28
+tags:
+    - attack.command_and_control
+    - attack.t1071.004
+    - attack.exfiltration
+    - attack.t1048.003
+    - attack.t1572
+    - detection.emerging_threats
+logsource:
+    category: dns_query
+    product: windows
+detection:
+    selection_long_query:
+        QueryName|re: '^[a-zA-Z0-9\-]{40,}\.'
+    selection_encoded_subdomains:
+        QueryName|re: '^[A-Za-z0-9+/=]{20,}\.[A-Za-z0-9+/=]{0,}\.'
+    selection_hex_subdomains:
+        QueryName|re: '^[0-9a-fA-F]{30,}\.'
+    selection_high_subdomain_depth:
+        QueryName|re: '^[^.]+\.[^.]+\.[^.]+\.[^.]+\.[^.]+\.[^.]+\.'
+    selection_suspicious_record_types:
+        QueryType:
+            - 'TXT'
+            - 'NULL'
+            - 'CNAME'
+            - 'MX'
+            - 'SRV'
+    selection_known_tools:
+        QueryName|contains:
+            - 'dns-over-'
+            - 'dnsc.'
+            - 'dnscat'
+            - 'iodine'
+            - 'dns2tcp'
+    filter_legitimate:
+        QueryName|endswith:
+            - '.microsoft.com'
+            - '.windows.com'
+            - '.windowsupdate.com'
+            - '.azure.com'
+            - '.office365.com'
+            - '.office.com'
+            - '.live.com'
+            - '.outlook.com'
+            - '.googleapis.com'
+            - '.gstatic.com'
+            - '.amazon.com'
+            - '.amazonaws.com'
+            - '.akamai.com'
+            - '.akamaiedge.net'
+            - '.cloudflare.com'
+            - '.cloudfront.net'
+            - '._tcp.'
+            - '._udp.'
+            - '.in-addr.arpa'
+            - '.ip6.arpa'
+    condition: ((selection_long_query or selection_encoded_subdomains or selection_hex_subdomains or selection_high_subdomain_depth) and selection_suspicious_record_types and not filter_legitimate) or selection_known_tools
+falsepositives:
+    - Legitimate DNS-based security tools and services (e.g., DNS-based content filtering)
+    - DKIM and SPF TXT record lookups with long encoded values
+    - CDN providers using long CNAME chains
+    - Legitimate VPN or tunneling solutions that use DNS
+level: high

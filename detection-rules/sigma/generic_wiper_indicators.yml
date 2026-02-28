@@ -1,0 +1,154 @@
+# FILE: sigma/generic_wiper_indicators.yml
+---
+title: Cross-Nation Wiper Malware MBR VBR Overwrite and Destructive Disk Operations
+id: 9f1a3b5c-7d8e-0f2a-4b6c-8d0e2f4a6b7c
+status: experimental
+description: |
+    Detects indicators of destructive wiper malware used across nation-state operations including
+    Iranian wipers (Shamoon/DistTrack, ZeroCleare, Agrius/Apostle, BiBi Wiper), Russian wipers
+    (WhisperGate, HermeticWiper, CaddyWiper, AcidRain, SwiftSlicer, RoarBAT, NikoWiper),
+    and DPRK wipers (KillDisk, Kobalos). Wipers target the Master Boot Record (MBR), Volume
+    Boot Record (VBR), partition tables, and file systems to render systems unbootable and
+    data unrecoverable. This rule detects direct disk access via raw device paths, MBR/VBR
+    overwrite patterns, abuse of legitimate tools for mass destruction (format.com, cipher.exe,
+    diskpart), mass file overwrite/deletion without ransom indicators, and driver-level disk
+    manipulation patterns common across wiper families.
+references:
+    - https://attack.mitre.org/techniques/T1561/002/
+    - https://attack.mitre.org/techniques/T1561/001/
+    - https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-057a
+    - https://www.microsoft.com/en-us/security/blog/2022/01/15/destructive-malware-targeting-ukrainian-organizations/
+    - https://www.mandiant.com/resources/blog/apt33-insights-into-iranian-cyber-espionage
+    - https://www.welivesecurity.com/2022/03/01/isaacwiper-hermeticwizard-wiper-worm-targeting-ukraine/
+    - https://www.sentinelone.com/labs/hermetic-wiper-ukraine-under-attack/
+author: Wendy's Drive-Through Detection Engineering
+date: 2026-02-28
+tags:
+    - attack.impact
+    - attack.t1561.002
+    - attack.t1561.001
+    - attack.t1485
+    - attack.t1490
+    - attack.defense_evasion
+    - attack.t1070.004
+    - detection.emerging_threats
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_raw_disk_access:
+        CommandLine|contains:
+            - '\\\\.\\PhysicalDrive'
+            - '\\\\.\\PhysicalDrive0'
+            - '\\\\.\\PHYSICALDRIVE0'
+            - '\\\\.\\C:'
+            - '\\\\.\\HarddiskVolume'
+            - '\\Device\\Harddisk'
+            - '\\\\.\\GLOBALROOT\\Device\\Harddisk'
+            - 'CreateFile.*PhysicalDrive'
+            - 'DeviceIoControl'
+    selection_mbr_overwrite_tools:
+        Image|endswith:
+            - '\dd.exe'
+            - '\rawwrite.exe'
+            - '\sdelete.exe'
+            - '\sdelete64.exe'
+        CommandLine|contains:
+            - 'if='
+            - 'of=\\\\.\\PhysicalDrive'
+            - '/p'
+            - '/z'
+    selection_diskpart_destructive:
+        Image|endswith: '\diskpart.exe'
+        CommandLine|contains:
+            - 'clean'
+            - 'delete partition override'
+            - 'delete volume'
+            - 'format'
+    selection_format_mass:
+        Image|endswith: '\format.com'
+        CommandLine|contains:
+            - '/fs:'
+            - '/y'
+            - '/q'
+            - '/x'
+    selection_cipher_overwrite:
+        Image|endswith: '\cipher.exe'
+        CommandLine|contains:
+            - '/w:'
+    selection_bcdedit_destructive:
+        Image|endswith: '\bcdedit.exe'
+        CommandLine|contains:
+            - 'delete'
+            - 'deletevalue'
+            - '/set.*recoveryenabled.*no'
+            - '/set.*bootstatuspolicy.*ignoreallfailures'
+            - 'safeboot'
+    selection_vssadmin_delete:
+        Image|endswith: '\vssadmin.exe'
+        CommandLine|contains|all:
+            - 'delete'
+            - 'shadows'
+    selection_wbadmin_delete:
+        Image|endswith: '\wbadmin.exe'
+        CommandLine|contains:
+            - 'delete catalog'
+            - 'delete backup'
+            - 'delete systemstatebackup'
+    selection_wmic_shadowcopy_delete:
+        Image|endswith: '\wmic.exe'
+        CommandLine|contains|all:
+            - 'shadowcopy'
+            - 'delete'
+    selection_powershell_wiper:
+        Image|endswith:
+            - '\powershell.exe'
+            - '\pwsh.exe'
+        CommandLine|contains:
+            - 'Remove-Item -Path .* -Recurse -Force'
+            - 'Get-WmiObject Win32_ShadowCopy | ForEach-Object.*Delete'
+            - 'Get-ChildItem.*-Recurse.*Remove-Item -Force'
+            - 'Clear-RecycleBin -Force'
+            - 'Format-Volume'
+            - '[System.IO.File]::WriteAllBytes'
+            - 'PhysicalDrive'
+    selection_mass_file_operations:
+        Image|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+        CommandLine|contains:
+            - 'del /f /s /q'
+            - 'rd /s /q C:\\'
+            - 'rmdir /s /q'
+            - 'erase /f /s /q'
+            - 'del /f /q C:\\*.* '
+            - 'for /r'
+            - 'forfiles /s /p C:\\ /c "cmd /c del'
+    selection_driver_based_wiper:
+        Image|endswith:
+            - '\EldoS\\RawDisk\\'
+            - '\elrawdsk.exe'
+            - '\rawdisk.sys'
+        CommandLine|contains:
+            - 'RawDisk'
+            - 'elrawdsk'
+            - 'rawdisk'
+    selection_recovery_disable_combo:
+        Image|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+        CommandLine|contains:
+            - 'bcdedit.*recoveryenabled.*no'
+            - 'wbadmin delete'
+            - 'vssadmin delete shadows /all'
+            - 'wmic shadowcopy delete'
+    condition: selection_raw_disk_access or selection_mbr_overwrite_tools or selection_diskpart_destructive or selection_cipher_overwrite or selection_driver_based_wiper or (selection_bcdedit_destructive and selection_vssadmin_delete) or (selection_bcdedit_destructive and selection_wbadmin_delete) or (selection_vssadmin_delete and selection_mass_file_operations) or (selection_wmic_shadowcopy_delete and selection_mass_file_operations) or (selection_recovery_disable_combo and selection_mass_file_operations) or selection_powershell_wiper
+falsepositives:
+    - Legitimate disk imaging and forensic tools accessing raw disk devices
+    - Authorized data sanitization procedures using secure delete tools
+    - System administrators performing legitimate disk management operations
+    - Authorized encryption software performing full-disk encryption
+    - Disaster recovery testing involving backup deletion and recreation
+level: critical
