@@ -2,6 +2,7 @@
 
 **Classification:** OSINT -- Open Source Intelligence Only
 **Initial Compilation:** 2026-02-28
+**Last Validated:** 2026-02-28 (all feeds and URLs verified live)
 **Baseline Knowledge:** Through May 2025 (see Intelligence Gaps section for coverage limitations)
 **Focus:** Iranian APT groups, Israeli cyber operations, US-Iran-Israel geopolitical cyber tensions
 **Intended Audience:** Blue team operators, CTI analysts, SOC analysts, incident responders
@@ -468,9 +469,9 @@ Understanding cross-vendor naming is **critical** for effective monitoring. The 
 | Source | Blog URL | RSS Feed | Focus |
 |---|---|---|---|
 | **Microsoft Threat Intelligence** | `microsoft.com/en-us/security/blog/topic/threat-intelligence/` | `microsoft.com/en-us/security/blog/topic/threat-intelligence/feed/` | Sandstorm group tracking (Mint, Peach, Cotton, Mango, Lemon, etc.) |
-| **Mandiant (Google Cloud)** | `mandiant.com/resources/blog` | `mandiant.com/resources/blog/rss.xml` | APT42, APT34, APT35, UNC groups; definitive Iranian APT research |
+| **Mandiant (Google Cloud)** | `cloud.google.com/blog/topics/threat-intelligence` | `cloudblog.withgoogle.com/topics/threat-intelligence/rss/` | APT42, APT34, APT35, UNC groups; definitive Iranian APT research |
 | **Google TAG** | `blog.google/threat-analysis-group/` | `blog.google/threat-analysis-group/rss/` | APT42 credential phishing; Iranian influence operations on Google platforms |
-| **CrowdStrike** | `crowdstrike.com/blog/` | `crowdstrike.com/blog/feed/` | KITTEN taxonomy; Annual Global Threat Report with Iran section |
+| **CrowdStrike** | `crowdstrike.com/en-us/blog/` | `crowdstrike.com/en-us/blog/feed` | KITTEN taxonomy; Annual Global Threat Report with Iran section |
 | **Recorded Future Insikt Group** | `recordedfuture.com/blog` | `recordedfuture.com/feed` | Iran threat landscape assessments; IRGC contractor ecosystem mapping |
 | **Check Point Research** | `research.checkpoint.com/` | `research.checkpoint.com/feed/` | Manticore taxonomy; LIONTAIL framework; deep Israel-targeting analysis |
 | **ClearSky Cyber Security** | `clearskysec.com` | -- | Most prolific Israeli tracker of Iranian APTs; landmark reports on Charming Kitten, MuddyWater |
@@ -481,21 +482,25 @@ Understanding cross-vendor naming is **critical** for effective monitoring. The 
 |---|---|---|---|
 | **Unit 42 (Palo Alto)** | `unit42.paloaltonetworks.com/` | `unit42.paloaltonetworks.com/feed/` | Educated Manticore, Crambus backdoor analysis, Lyceum DNS tunneling |
 | **SentinelOne / SentinelLabs** | `sentinelone.com/labs/` | `sentinelone.com/labs/feed/` | Agrius wipers, Moses Staff analysis, BiBi wiper, MuddyWater PhonyC2 |
-| **ESET WeLiveSecurity** | `welivesecurity.com/` | `welivesecurity.com/feed/` | OilRig backdoor analysis, MuddyWater frameworks, Ballistic Bobcat |
+| **ESET WeLiveSecurity** | `welivesecurity.com/en/` | `welivesecurity.com/en/rss/feed/` | OilRig backdoor analysis, MuddyWater frameworks, Ballistic Bobcat |
 | **Proofpoint** | `proofpoint.com/us/blog/threat-insight` | `proofpoint.com/us/rss.xml` | TA453 social engineering, TA456 fake personas, TA450 MuddyWater |
-| **Volexity** | `volexity.com/blog/` | `volexity.com/blog/feed/` | CharmingCypress BASICSTAR malware, credential phishing tradecraft |
+| **Volexity** | `volexity.com/blog/` | `volexity.com/feed/` | CharmingCypress BASICSTAR malware, credential phishing tradecraft |
 | **Cisco Talos** | `blog.talosintelligence.com/` | `blog.talosintelligence.com/rss/` | MuddyWater campaign analysis, Lyceum DNS backdoors |
-| **Secureworks CTU** | `secureworks.com/blog` | `secureworks.com/rss?feed=blog` | COBALT taxonomy; COBALT MIRAGE, COBALT ILLUSION |
+| **Sophos X-Ops** (formerly Secureworks CTU) | `news.sophos.com/en-us/category/threat-research/` | -- | Acquired Secureworks; inherits COBALT taxonomy research. Sophos X-Ops covers nation-state threats |
 
 ### Tier 3 -- Supporting Coverage
 
 | Source | Blog URL | RSS Feed | Focus |
 |---|---|---|---|
-| **Dragos** | `dragos.com/blog/` | `dragos.com/feed/` | ICS/SCADA focus; MAGNALLIUM, CHRYSENE, PARISITE; CyberAv3ngers |
-| **Trellix** | `trellix.com/blogs/research/` | `trellix.com/blogs/research/rss/` | Successor to FireEye; historical Iranian APT research |
+| **Dragos** | `dragos.com/blog/` | -- | ICS/SCADA focus; MAGNALLIUM, CHRYSENE, PARISITE; CyberAv3ngers. **Note: RSS feed deprecated; monitor blog directly** |
 | **Kaspersky SecureList** | `securelist.com/` | `securelist.com/feed/` | MuddyWater, OilRig, Domestic Kitten. **Note: Russian-based; cross-reference with Western sources** |
-| **BlackBerry** | `blogs.blackberry.com/en/category/research-and-intelligence` | `blogs.blackberry.com/en/feed` | MuddyWater campaigns; quarterly Global Threat Intelligence Reports |
-| **Binary Defense** | `binarydefense.com/resources/blog/` | `binarydefense.com/feed/` | Threat landscape reports referencing Iranian actors |
+| **Intel 471** | `intel471.com/blog/` | `intel471.com/blog/feed` | Iranian cyber-criminal nexus; underground monitoring. Acquired SpiderFoot OSINT platform |
+
+> **Removed (validated dead as of Feb 2026):**
+> - **Trellix** -- Domain completely unreachable (connection refused). Historical FireEye research now hosted under Mandiant/Google Cloud.
+> - **Binary Defense** -- RSS feed returns 404. Blog structure changed; limited primary Iranian APT research.
+> - **BlackBerry** -- Blog RSS redirects to restructured corporate site; no longer reliably parseable. Limited primary research.
+> - **Secureworks** -- Acquired by Sophos; all URLs redirect. Moved to Tier 2 as Sophos X-Ops.
 
 ---
 
@@ -634,7 +639,7 @@ Understanding cross-vendor naming is **critical** for effective monitoring. The 
 | **Hybrid Analysis** | `hybrid-analysis.com` | CrowdStrike Falcon Sandbox. Free analysis of suspected Iranian APT samples |
 | **ANY.RUN** | `any.run` | Interactive sandbox. Behavioral analysis. Public submissions searchable |
 | **Joe Sandbox** | `joesandbox.com` | Deep behavioral analysis reports |
-| **InQuest Labs** | `labs.inquest.net` | Document/file analysis. Specializes in weaponized documents (Iranian APT staple) |
+| **OPSWAT MetaDefender** (formerly InQuest Labs) | `metadefender.opswat.com` | Document/file analysis via Deep CDR. InQuest acquired by OPSWAT; specializes in weaponized documents (Iranian APT staple) |
 | **Malpedia** | `malpedia.caad.fkie.fraunhofer.de` | Malware family encyclopedia with Iranian APT associations |
 
 ### 14.2 Infrastructure Reconnaissance
@@ -644,7 +649,7 @@ Understanding cross-vendor naming is **critical** for effective monitoring. The 
 | **Shodan** | `shodan.io` | Track Iranian C2 infrastructure. Monitor vulnerable VPN appliances. Unitronics PLC exposure. Iranian ASN monitoring (AS12880, AS44244, AS58224, AS42337, AS56402, AS48159) |
 | **Censys** | `search.censys.io` | SSL certificate tracking for Iranian APT infrastructure. Certificate transparency monitoring for impersonation domains |
 | **GreyNoise** | `greynoise.io` | Distinguish targeted Iranian attacks from mass scanning. Iranian reconnaissance pattern analysis |
-| **PassiveTotal / RiskIQ** | `community.riskiq.com` | Passive DNS and WHOIS history. Map Iranian domain infrastructure over time |
+| **Microsoft Defender Threat Intelligence** (formerly RiskIQ/PassiveTotal) | `learn.microsoft.com/en-us/defender/threat-intelligence/` | Passive DNS, WHOIS history, threat analytics. RiskIQ fully absorbed into Microsoft Defender TI. Map Iranian domain infrastructure over time |
 | **DomainTools** | `domaintools.com` | WHOIS intelligence. Iranian domain registration pattern identification |
 | **SecurityTrails** | `securitytrails.com` | Historical DNS data. Infrastructure change tracking |
 | **Pulsedive** | `pulsedive.com` | Free threat intel with community-enriched IOCs and risk scoring |
@@ -662,10 +667,10 @@ Understanding cross-vendor naming is **critical** for effective monitoring. The 
 
 | Tool | URL | Use Case |
 |---|---|---|
-| **OpenCTI** | `opencti.io` | Open source CTI platform. STIX/TAXII compatible. Central aggregation |
+| **OpenCTI** (by Filigran) | `github.com/OpenCTI-Platform/opencti` | Open source CTI platform. STIX/TAXII compatible. Central aggregation. Company rebranded to Filigran (`filigran.io`) |
 | **MISP** | `misp-project.org` | Threat sharing platform. Multiple Iranian APT community feeds |
 | **Maltego** | `maltego.com` | Link analysis and visualization for Iranian infrastructure/persona mapping |
-| **SpiderFoot** | `spiderfoot.net` | OSINT automation for investigating Iranian threat infrastructure |
+| **Intel 471 OSINT** (formerly SpiderFoot) | `intel471.com` | OSINT automation for investigating Iranian threat infrastructure. SpiderFoot acquired by Intel 471 |
 
 ### 14.5 Iranian ASN Space
 
@@ -721,7 +726,7 @@ Key autonomous systems for infrastructure monitoring:
 |---|---|---|
 | **CISA KEV** | `https://www.cisa.gov/known-exploited-vulnerabilities-catalog` | Actively exploited CVEs including those used by Iranian APTs |
 | **IBM X-Force Exchange** | `https://exchange.xforce.ibmcloud.com` | Search for Iranian APT indicators and reports |
-| **OpenCTI** | `https://github.com/OpenCTI-Platform/opencti` | Aggregation platform with connectors for all above sources |
+| **OpenCTI** (by Filigran) | `https://github.com/OpenCTI-Platform/opencti` | Aggregation platform with connectors for all above sources |
 | **MalTrail** | `https://github.com/stamparm/maltrail` | Trail-based IOC feeds including Iranian indicators |
 | **YARA Rules Repo** | `https://github.com/Yara-Rules/rules` | Community YARA rules for Iranian malware families |
 | **CFR Cyber Ops Tracker** | `https://cfr.org/cyber-operations` | Database of all state-sponsored cyber operations including Iran |
@@ -733,36 +738,40 @@ Key autonomous systems for infrastructure monitoring:
 ### Government / Institutional
 
 ```
-CISA Advisories:        https://www.cisa.gov/cybersecurity-advisories/all.xml
-CISA ICS Advisories:    https://www.cisa.gov/cybersecurity-advisories/ics-advisories.xml
-NSA Press/Advisories:   https://www.nsa.gov/Press-Room/Press-Releases-Statements/Press-Release-View/rss/
+CISA KEV JSON:          https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json
 UK NCSC Reports:        https://www.ncsc.gov.uk/api/1/services/v1/report-rss-feed.xml
 UK NCSC All:            https://www.ncsc.gov.uk/api/1/services/v1/all-rss-feed.xml
 ```
+
+> **Note (Feb 2026):** CISA RSS feeds (`all.xml`, `ics-advisories.xml`) now return 403 -- deprecated.
+> NSA RSS feed also returns 403. Monitor CISA advisories page directly and use the KEV JSON API for automated ingestion.
+> CISA KEV JSON is actively maintained (catalog version 2026.02.26, 1529 vulnerabilities tracked).
 
 ### Vendor Research Blogs
 
 ```
 Microsoft Threat Intel: https://www.microsoft.com/en-us/security/blog/topic/threat-intelligence/feed/
 Google TAG:             https://blog.google/threat-analysis-group/rss/
-Mandiant:               https://www.mandiant.com/resources/blog/rss.xml
-CrowdStrike:            https://www.crowdstrike.com/blog/feed/
+Mandiant:               https://cloudblog.withgoogle.com/topics/threat-intelligence/rss/
+CrowdStrike:            https://www.crowdstrike.com/en-us/blog/feed
 Recorded Future:        https://www.recordedfuture.com/feed
 Unit 42:                https://unit42.paloaltonetworks.com/feed/
 Check Point Research:   https://research.checkpoint.com/feed/
 SentinelLabs:           https://www.sentinelone.com/labs/feed/
-ESET WeLiveSecurity:    https://www.welivesecurity.com/feed/
-Dragos:                 https://www.dragos.com/feed/
+ESET WeLiveSecurity:    https://www.welivesecurity.com/en/rss/feed/
 Cisco Talos:            https://blog.talosintelligence.com/rss/
 Proofpoint:             https://www.proofpoint.com/us/rss.xml
-Secureworks Blog:       https://www.secureworks.com/rss?feed=blog
-Secureworks Research:   https://www.secureworks.com/rss?feed=research
-Trellix:                https://www.trellix.com/blogs/research/rss/
 Kaspersky SecureList:   https://securelist.com/feed/
-Volexity:               https://www.volexity.com/blog/feed/
-Binary Defense:         https://www.binarydefense.com/feed/
-BlackBerry:             https://blogs.blackberry.com/en/feed
+Volexity:               https://www.volexity.com/feed/
+Intel 471:              https://www.intel471.com/blog/feed
 ```
+
+> **Removed from RSS list (validated dead Feb 2026):**
+> - Dragos (`dragos.com/feed/`) -- 404; RSS deprecated. Monitor blog directly.
+> - Secureworks (`secureworks.com/rss`) -- Redirects to Sophos. Acquired.
+> - Trellix (`trellix.com/blogs/research/rss/`) -- Domain unreachable.
+> - Binary Defense (`binarydefense.com/feed/`) -- 404.
+> - BlackBerry (`blogs.blackberry.com/en/feed`) -- Redirects to restructured corporate site.
 
 ### IOC / Threat Data Feeds
 
