@@ -1,3 +1,14 @@
+---
+feedId: israel-iran-cyber-operations-2026-02-28
+title: Israel-Iran Cyber Operations Deep Dive — February 2026
+topic: nation-state
+industry: critical-infrastructure
+country: IL
+severity: critical
+tags: [israel, iran, predatory-sparrow, ics-scada, ot-security, cyber-kinetic, unit-8200, retaliation, wiper]
+summary: Technical deep dive on Israeli offensive cyberattacks against Iran in February 2026 — attack vectors, targeted ICS/SCADA systems, impact assessment, Iranian retaliation, and historical cyber-kinetic integration analysis.
+---
+
 # Israel-Iran Cyber Operations Deep Dive -- February 2026
 
 **Classification:** OSINT -- Open Source Intelligence Only

@@ -1,3 +1,14 @@
+---
+feedId: dprk-apt-threat-intel-2026
+title: DPRK Cyber Threat Intelligence Feed
+topic: nation-state
+industry: financial
+country: KP
+severity: critical
+tags: [lazarus-group, tradertraitor, rgb, cryptocurrency, it-worker-fraud, supply-chain, ransomware, bybit, andariel]
+summary: North Korean RGB cyber operations covering Lazarus Group, TraderTraitor $1.5B Bybit cryptocurrency theft, IT worker fraud schemes, supply chain attacks (3CX, JumpCloud), and ransomware.
+---
+
 # DPRK Cyber Threat Intelligence Feed
 
 **Classification:** OSINT -- Open Source Intelligence Only

@@ -1,3 +1,14 @@
+---
+feedId: iran-israel-apt-threat-intel-2026
+title: US-Iran-Israel Cyber Threat Intelligence Feed
+topic: nation-state
+industry: critical-infrastructure
+country: IR
+severity: high
+tags: [apt33, apt34, irgc, mois, iran, israel, wiper, hacktivist, predatory-sparrow, scarred-manticore]
+summary: Iranian IRGC/MOIS APT operations and Israeli offensive cyber capabilities. Hacktivist persona operations, critical infrastructure pre-positioning, wiper malware campaigns, and N-day exploitation.
+---
+
 # US-Iran-Israel Cyber Threat Intelligence Feed
 
 **Classification:** OSINT -- Open Source Intelligence Only

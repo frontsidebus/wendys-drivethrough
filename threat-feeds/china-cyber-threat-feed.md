@@ -1,3 +1,14 @@
+---
+feedId: china-apt-threat-intel-2026
+title: China Cyber Threat Intelligence Feed
+topic: nation-state
+industry: critical-infrastructure
+country: CN
+severity: critical
+tags: [volt-typhoon, salt-typhoon, apt41, mss, pla, critical-infrastructure, telecom, ics-scada, orb-network]
+summary: PRC state-sponsored APT group profiles covering Volt Typhoon critical infrastructure pre-positioning, Salt Typhoon telecom compromise, MSS/PLA operations, ORB networks, and Taiwan contingency planning.
+---
+
 # China Cyber Threat Intelligence Feed
 
 **Classification:** OSINT -- Open Source Intelligence Only

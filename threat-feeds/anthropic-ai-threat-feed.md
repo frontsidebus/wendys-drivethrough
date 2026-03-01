@@ -1,3 +1,15 @@
+---
+feedId: anthropic-ai-threat-intel-2026
+title: Anthropic AI Company Cyber Threat Intelligence Feed
+topic: ai-security
+industry: technology
+country: US
+company: Anthropic
+severity: high
+tags: [ai-security, ml-supply-chain, prompt-injection, llm, anthropic, model-security]
+summary: Threat actors, attack vectors, and incidents targeting Anthropic and the broader AI/ML industry. Covers weaponized AI incidents, model security, prompt injection, and AI supply chain threats.
+---
+
 # Anthropic AI Company Cyber Threat Intelligence Feed
 
 **Classification:** OSINT -- Open Source Intelligence Only

@@ -1,3 +1,14 @@
+---
+feedId: iran-middle-east-sitrep-2026-02-28
+title: Iran / Middle East 24-Hour Threat Intelligence SITREP
+topic: nation-state
+industry: critical-infrastructure
+country: IR
+severity: critical
+tags: [iran, middle-east, sitrep, kinetic, hormuz, irgc, cyber-ops, proxy-forces]
+summary: 24-hour SITREP for 2026-02-28 covering US-Israeli joint military strikes on Iran, Iranian retaliation, proxy force activation, Strait of Hormuz closure, and concurrent cyber operations.
+---
+
 # Iran / Middle East 24-Hour Threat Intelligence SITREP
 
 **Classification:** OSINT -- Open Source Intelligence Only

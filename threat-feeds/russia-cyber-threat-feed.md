@@ -1,3 +1,14 @@
+---
+feedId: russia-apt-threat-intel-2026
+title: Russia Cyber Threat Intelligence Feed
+topic: nation-state
+industry: critical-infrastructure
+country: RU
+severity: critical
+tags: [apt28, apt29, sandworm, svr, gru, fsb, ukraine, notpetya, midnight-blizzard, turla, wiper]
+summary: Russian SVR/GRU/FSB cyber operations covering APT28/Fancy Bear, APT29/Midnight Blizzard cloud targeting, Sandworm destructive campaigns. Ukraine conflict cyber ops, critical infrastructure pre-positioning, wiper malware arsenal.
+---
+
 # Russia Cyber Threat Intelligence Feed
 
 **Classification:** OSINT -- Open Source Intelligence Only
