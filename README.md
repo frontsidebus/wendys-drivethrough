@@ -10,6 +10,7 @@ threat-feeds/
   russia-cyber-threat-feed.md           # Russia -- APT28, APT29, Sandworm, Turla, Gamaredon, etc.
   china-cyber-threat-feed.md            # China -- Volt Typhoon, Salt Typhoon, APT41, APT40, APT10, etc.
   dprk-cyber-threat-feed.md             # DPRK -- Lazarus, Kimsuky, BlueNoroff, TraderTraitor, etc.
+  anthropic-ai-threat-feed.md           # Anthropic/AI -- GTG-1002, Claude Code CVEs, AI supply chain, prompt injection, ATLAS
 automation/
   fetch_rss_feeds.py                    # RSS/Atom feed aggregator with nation-state keyword tagging
   fetch_ioc_feeds.py                    # IOC aggregator (URLhaus, MalwareBazaar, ThreatFox, CISA KEV)
@@ -24,9 +25,9 @@ detection-rules/
 
 ## What This Is
 
-A living collection of vetted, correlated intelligence sources for tracking nation-state cyber operations. Built from cross-referencing defense/government intel blogs, cybersecurity research vendors, OSINT platforms, social media feeds, and IOC repositories.
+A living collection of vetted, correlated intelligence sources for tracking nation-state cyber operations and AI/ML-specific threats. Built from cross-referencing defense/government intel blogs, cybersecurity research vendors, OSINT platforms, social media feeds, and IOC repositories.
 
-This is not a raw IOC dump. It's an analyst-curated reference for building and maintaining situational awareness on active threat actors, their TTPs, infrastructure patterns, and the geopolitical context driving their operations.
+This is not a raw IOC dump. It's an analyst-curated reference for building and maintaining situational awareness on active threat actors, their TTPs, infrastructure patterns, and the geopolitical context driving their operations. The collection includes both **adversary-focused feeds** (organized by nation-state) and **target-focused feeds** (organized by the entity being targeted, starting with Anthropic and the broader AI industry).
 
 ## How To Use
 

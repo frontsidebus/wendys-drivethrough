@@ -13,7 +13,12 @@
     "proofpoint": "https://www.proofpoint.com/us/rss.xml",
     "kaspersky_securelist": "https://securelist.com/feed/",
     "volexity": "https://www.volexity.com/feed/",
-    "intel471": "https://www.intel471.com/blog/feed"
+    "intel471": "https://www.intel471.com/blog/feed",
+    "anthropic_research": "https://www.anthropic.com/research/rss",
+    "anthropic_news": "https://www.anthropic.com/news/rss",
+    "trail_of_bits": "https://blog.trailofbits.com/feed/",
+    "hiddenlayer": "https://hiddenlayer.com/research/feed/",
+    "protect_ai": "https://protectai.com/blog/rss"
   },
   "government_feeds": {
     "cisa_kev_json": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
@@ -44,7 +49,8 @@
   "reddit_subreddits": [
     "netsec", "cybersecurity", "threatintel", "ReverseEngineering", "Malware",
     "OSINT", "blueteamsec", "CryptoCurrency", "NorthKoreaNews",
-    "UkrainianConflict", "geopolitics", "intelligence", "CredibleDefense", "china"
+    "UkrainianConflict", "geopolitics", "intelligence", "CredibleDefense", "china",
+    "MachineLearning", "LocalLLaMA", "artificial", "ClaudeAI"
   ],
   "substack_feeds": {
     "risky_business_news": "https://news.risky.biz/feed",
@@ -101,6 +107,13 @@
       "Citrine Sleet", "Moonstone Sleet", "Jade Sleet", "Ruby Sleet",
       "TraderTraitor", "HIDDEN COBRA", "RGB", "DPRK", "North Korea",
       "AppleJeus", "FASTCash", "3CX"
+    ],
+    "anthropic": [
+      "Anthropic", "Claude", "Claude API", "Claude Code",
+      "Constitutional AI", "GTG-1002",
+      "prompt injection", "model extraction", "LLM jailbreak",
+      "AI safety", "AI security", "model poisoning",
+      "training data", "RLHF", "model weights"
     ]
   }
 }
